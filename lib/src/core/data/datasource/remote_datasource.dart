@@ -5,7 +5,7 @@ import 'package:flutter_story/src/core/common/story_api.dart';
 import 'package:flutter_story/src/core/data/model/login_response.dart';
 import 'package:http/http.dart';
 
-import '../model/register_response.dart';
+import '../model/common_response.dart';
 import '../model/stories_response.dart';
 
 class RemoteDatasource {
