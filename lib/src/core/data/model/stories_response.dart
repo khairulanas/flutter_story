@@ -1,3 +1,5 @@
+import 'package:flutter_story/src/core/domain/story_entity.dart';
+
 class StoriesResponse {
   final bool error;
   final String message;
@@ -48,4 +50,7 @@ class StoryModel {
       DateTime.parse(json["createdAt"]),
       double.tryParse(json["lat"]),
       double.tryParse(json["lon"]));
+
+  StoryEnity toEntity() =>
+      StoryEnity(id, name, description, photoUrl, createdAt, lat, lon);
 }
