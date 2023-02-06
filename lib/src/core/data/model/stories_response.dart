@@ -1,4 +1,4 @@
-import 'package:flutter_story/src/core/domain/story_entity.dart';
+import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
 
 class StoriesResponse {
   final bool error;

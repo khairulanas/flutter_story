@@ -6,7 +6,7 @@ abstract class LocalDatasource {
   Future<CommonResponse> saveLoginData(LoginResult loginData);
   Future<LoginResult> getLoginData();
   Future<bool> deleteLoginData();
-  Future<bool> isLoggedIn();
+  bool? isLoggedIn();
   String getToken();
 }
 
@@ -60,8 +60,8 @@ class LocalDatasourceImpl implements LocalDatasource {
   }
 
   @override
-  Future<bool> isLoggedIn() async {
-    return sharedPreferences.getBool(isLoginKey) ?? false;
+  bool? isLoggedIn() {
+    return sharedPreferences.getBool(isLoginKey);
   }
 
   @override
