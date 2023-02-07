@@ -114,6 +114,6 @@ class RepositoryImpl implements Repository {
 
   @override
   bool? isLoggedIn() {
-    return localDatasource.isLoggedIn();
+    return localDatasource.isLoggedIn() ?? false;
   }
 }

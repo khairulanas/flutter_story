@@ -12,6 +12,25 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('RegisterScreen'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text("RegisterScreen"),
+          TextButton(
+            onPressed: onLogin,
+            child: const Text("onLogin"),
+          ),
+          TextButton(
+            onPressed: onRegister,
+            child: const Text("onRegister"),
+          ),
+        ],
+      ),
+    );
   }
 }

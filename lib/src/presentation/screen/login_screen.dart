@@ -12,6 +12,25 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('LoginScreen'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text("LoginScreen"),
+          TextButton(
+            onPressed: onLogin,
+            child: const Text("onLogin"),
+          ),
+          TextButton(
+            onPressed: onRegister,
+            child: const Text("onRegister"),
+          ),
+        ],
+      ),
+    );
   }
 }

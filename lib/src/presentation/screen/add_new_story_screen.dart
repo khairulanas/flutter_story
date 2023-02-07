@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 
 class AddNewStoryScreen extends StatelessWidget {
-  const AddNewStoryScreen({super.key});
+  final Function() onSubmit;
+  const AddNewStoryScreen({super.key, required this.onSubmit});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('AddNewStoryScreen'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text("AddNewStoryScreen"),
+          TextButton(
+            onPressed: onSubmit,
+            child: const Text("onSubmit"),
+          )
+        ],
+      ),
+    );
   }
 }

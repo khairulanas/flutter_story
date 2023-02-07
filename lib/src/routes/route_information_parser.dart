@@ -16,6 +16,8 @@ class MyRouteInformationParser
       final first = uri.pathSegments[0].toLowerCase();
       if (first == 'home') {
         return PageConfiguration.home();
+      } else if (first == 'create') {
+        return PageConfiguration.createStory();
       } else if (first == 'login') {
         return PageConfiguration.login();
       } else if (first == 'register') {
@@ -52,6 +54,8 @@ class MyRouteInformationParser
       return const RouteInformation(location: '/login');
     } else if (configuration.isHomePage) {
       return const RouteInformation(location: '/');
+    } else if (configuration.isCreateStoryPage) {
+      return const RouteInformation(location: '/create');
     } else if (configuration.isDetailPage) {
       return RouteInformation(location: '/quote/${configuration.storyId}');
     } else {

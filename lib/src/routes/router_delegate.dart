@@ -60,6 +60,7 @@ class MyRouterDelegate extends RouterDelegate<PageConfiguration>
 
         isRegister = false;
         selectedStory = null;
+        isCreateNewStrory = false;
         notifyListeners();
 
         return true;
@@ -77,10 +78,12 @@ class MyRouterDelegate extends RouterDelegate<PageConfiguration>
       return PageConfiguration.login();
     } else if (isUnknown == true) {
       return PageConfiguration.unknown();
-    } else if (selectedStory == null) {
+    } else if (selectedStory == null && isCreateNewStrory == false) {
       return PageConfiguration.home();
     } else if (selectedStory != null) {
       return PageConfiguration.detailStory(selectedStory!);
+    } else if (isCreateNewStrory == true) {
+      return PageConfiguration.createStory();
     } else {
       return null;
     }
@@ -158,13 +161,16 @@ class MyRouterDelegate extends RouterDelegate<PageConfiguration>
         MaterialPage(
           key: const ValueKey("StoriesListPage"),
           child: StoriesListScreen(
-            // stories: repository,
             onTapped: (String storyId) {
               selectedStory = storyId;
               notifyListeners();
             },
             onLogout: () {
               isLoggedIn = false;
+              notifyListeners();
+            },
+            onCreateNewStory: () {
+              isCreateNewStrory = true;
               notifyListeners();
             },
           ),
@@ -179,7 +185,12 @@ class MyRouterDelegate extends RouterDelegate<PageConfiguration>
         if (isCreateNewStrory)
           MaterialPage(
             key: ValueKey(selectedStory),
-            child: const AddNewStoryScreen(),
+            child: AddNewStoryScreen(
+              onSubmit: () {
+                isCreateNewStrory = false;
+                notifyListeners();
+              },
+            ),
           ),
       ];
 }
