@@ -3,6 +3,7 @@ import 'package:flutter_story/src/core/common/failure.dart';
 import 'package:flutter_story/src/core/data/datasource/local_datasource.dart';
 import 'package:flutter_story/src/core/data/datasource/remote_datasource.dart';
 import 'package:flutter_story/src/core/data/model/common_response.dart';
+import 'package:flutter_story/src/core/data/model/login_response.dart';
 import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
 import 'package:flutter_story/src/core/domain/entities/user_entity.dart';
 
@@ -22,6 +23,7 @@ abstract class Repository {
   Future<Either<Failure, StoryEnity>> getStoryById(String id);
   Future<Either<Failure, bool>> logout();
   bool? isLoggedIn();
+  Future<Either<Failure, LoginResult>> getLoginData();
 }
 
 class RepositoryImpl implements Repository {
@@ -115,5 +117,15 @@ class RepositoryImpl implements Repository {
   @override
   bool? isLoggedIn() {
     return localDatasource.isLoggedIn() ?? false;
+  }
+
+  @override
+  Future<Either<Failure, LoginResult>> getLoginData() async {
+    try {
+      final res = await localDatasource.getLoginData();
+      return right(res);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 }
