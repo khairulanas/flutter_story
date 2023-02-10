@@ -11,28 +11,27 @@ class AuthProvider extends ChangeNotifier {
   bool isLoadingLogin = false;
   bool isLoadingLogout = false;
   bool isLoadingRegister = false;
-  bool isRegisterError = false;
-  bool isLoginError = false;
   bool isLoggedIn = false;
   String? errMessage;
   late UserEntity userData;
 
   Future<bool> register(String email, String name, String password) async {
-    isRegisterError = false;
     isLoadingRegister = true;
     notifyListeners();
 
     final res = await authRepository.register(
         name: name, email: email, password: password);
 
-    res.fold((l) {
-      isRegisterError = true;
+    return res.fold((l) {
+      isLoadingRegister = false;
       errMessage = l.message;
-    }, (r) => null);
-
-    isLoadingRegister = false;
-    notifyListeners();
-    return true;
+      notifyListeners();
+      return false;
+    }, (r) {
+      isLoadingRegister = false;
+      notifyListeners();
+      return true;
+    });
   }
 
   Future<bool> login(String email, String password) async {
@@ -68,5 +67,18 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     return !isLoggedIn;
+  }
+
+  bool loadUserData() {
+    final res = authRepository.getLoginData();
+    return res.fold((l) {
+      errMessage = l.message;
+      notifyListeners();
+      return false;
+    }, (r) {
+      userData = r;
+      notifyListeners();
+      return true;
+    });
   }
 }
