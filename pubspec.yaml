@@ -20,8 +20,10 @@ dependencies:
     sdk: flutter
   go_router: ^6.0.3
   http: ^0.13.5
+  image: ^4.0.13
   intl: any
   json_annotation: ^4.8.0
+  provider: ^6.0.5
   shared_preferences: ^2.0.17
 
 dev_dependencies:
