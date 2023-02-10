@@ -3,7 +3,6 @@ import 'package:flutter_story/src/core/common/failure.dart';
 import 'package:flutter_story/src/core/data/datasource/local_datasource.dart';
 import 'package:flutter_story/src/core/data/datasource/remote_datasource.dart';
 import 'package:flutter_story/src/core/data/model/common_response.dart';
-import 'package:flutter_story/src/core/data/model/login_response.dart';
 import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
 import 'package:flutter_story/src/core/domain/entities/user_entity.dart';
 
