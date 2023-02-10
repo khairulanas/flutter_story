@@ -6,14 +6,16 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SplashScreen'),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const [
-          Text("SplashScreen"),
+          Center(
+              child: Text(
+            "StoryApp",
+            style: TextStyle(fontSize: 30),
+          )),
+          Center(child: Text("Loading...")),
         ],
       ),
     );
