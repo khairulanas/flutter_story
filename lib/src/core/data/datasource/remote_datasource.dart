@@ -46,7 +46,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
   @override
   Future<LoginResponse> login(String email, String password) async {
-    final res = await client.post(Uri.parse(StoryApi.register),
+    final res = await client.post(Uri.parse(StoryApi.login),
         body: {"email": email, "password": password});
     if (res.statusCode != 200) {
       throw Exception(CommonResponse.fromJson(jsonDecode(res.body)).message);
