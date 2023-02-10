@@ -8,14 +8,14 @@ class StoryDetailProvider with ChangeNotifier {
   final String id;
 
   StoryDetailProvider(this.repository, this.id) {
-    getStoryList(id);
+    getDetailStory(id);
   }
 
   ResultState state = ResultState.loading;
   late StoryEnity story;
   String errMessage = '';
 
-  Future<void> getStoryList(String id) async {
+  Future<void> getDetailStory(String id) async {
     state = ResultState.loading;
     notifyListeners();
 
