@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class LocalDatasource {
   Future<CommonResponse> saveLoginData(LoginResult loginData);
-  Future<LoginResult> getLoginData();
+  LoginResult getLoginData();
   Future<bool> deleteLoginData();
   bool? isLoggedIn();
   String getToken();
@@ -16,9 +16,9 @@ class LocalDatasourceImpl implements LocalDatasource {
   LocalDatasourceImpl(this.sharedPreferences);
 
   final String isLoginKey = "isLogin";
-  final String userIdKey = "isLogin";
-  final String nameKey = "isLogin";
-  final String tokenKey = "isLogin";
+  final String userIdKey = "userIdKey";
+  final String nameKey = "nameKey";
+  final String tokenKey = "tokenKey";
 
   @override
   Future<CommonResponse> saveLoginData(LoginResult loginData) async {
@@ -36,7 +36,7 @@ class LocalDatasourceImpl implements LocalDatasource {
   }
 
   @override
-  Future<LoginResult> getLoginData() async {
+  LoginResult getLoginData() {
     final isLogin = sharedPreferences.getBool(isLoginKey) ?? false;
     if (!isLogin) {
       throw Exception("user not logged in");
