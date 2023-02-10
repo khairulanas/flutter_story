@@ -10,9 +10,8 @@ class StoriesResponse {
   factory StoriesResponse.fromJson(Map json) => StoriesResponse(
         json["error"],
         json["message"],
-        (json["loginResult"] as List)
-            .map((e) => StoryModel.fromJson(e))
-            .toList(),
+        List<StoryModel>.from(
+            json["listStory"].map((x) => StoryModel.fromJson(x))),
       );
 }
 
@@ -31,25 +30,33 @@ class StoryResponse {
 }
 
 class StoryModel {
-  final String id;
-  final String name;
-  final String description;
-  final String photoUrl;
-  final DateTime createdAt;
-  final double? lat;
-  final double? lon;
+  StoryModel({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.photoUrl,
+    required this.createdAt,
+    this.lat,
+    this.lon,
+  });
 
-  StoryModel(this.id, this.name, this.description, this.photoUrl,
-      this.createdAt, this.lat, this.lon);
+  String id;
+  String name;
+  String description;
+  String photoUrl;
+  DateTime createdAt;
+  double? lat;
+  double? lon;
 
-  factory StoryModel.fromJson(Map json) => StoryModel(
-      json["id"],
-      json["name"],
-      json["description"],
-      json["photoUrl"],
-      DateTime.parse(json["createdAt"]),
-      double.tryParse(json["lat"]),
-      double.tryParse(json["lon"]));
+  factory StoryModel.fromJson(Map<String, dynamic> json) => StoryModel(
+        id: json["id"],
+        name: json["name"],
+        description: json["description"],
+        photoUrl: json["photoUrl"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        lat: json["lat"]?.toDouble(),
+        lon: json["lon"]?.toDouble(),
+      );
 
   StoryEnity toEntity() =>
       StoryEnity(id, name, description, photoUrl, createdAt, lat, lon);
