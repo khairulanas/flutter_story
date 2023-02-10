@@ -5,8 +5,11 @@ import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
 
 class StoryDetailProvider with ChangeNotifier {
   final Repository repository;
+  final String id;
 
-  StoryDetailProvider(this.repository);
+  StoryDetailProvider(this.repository, this.id) {
+    getStoryList(id);
+  }
 
   ResultState state = ResultState.loading;
   late StoryEnity story;
