@@ -34,7 +34,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('StoriesListScreen'),
+        title: const Text('Story App'),
       ),
       drawer: Drawer(
         child: Consumer2<AuthProvider, LocalizationProvider>(
@@ -54,6 +54,12 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
             ],
           );
         }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          widget.onCreateNewStory();
+        },
+        child: const Icon(Icons.add),
       ),
       body: Consumer<StoryListProvider>(
         builder: (_, storyProv, __) {
@@ -93,7 +99,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
                         child: Column(
                           children: [
                             Text(stories[index].name),
-                            Text(stories[index].createdAt.toIso8601String())
+                            Text(stories[index].createdAt.toString())
                           ],
                         ),
                       ),
