@@ -23,7 +23,7 @@ abstract class Repository {
   Future<Either<Failure, StoryEnity>> getStoryById(String id);
   Future<Either<Failure, bool>> logout();
   bool? isLoggedIn();
-  Future<Either<Failure, LoginResult>> getLoginData();
+  Either<Failure, UserEntity> getLoginData();
 }
 
 class RepositoryImpl implements Repository {
@@ -57,7 +57,7 @@ class RepositoryImpl implements Repository {
       final resData = await remoteDatasource.login(email, password);
       await localDatasource.saveLoginData(resData.loginResult);
       return right(
-          UserEntity(resData.loginResult.name, resData.loginResult.name));
+          UserEntity(resData.loginResult.name, resData.loginResult.userId));
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -120,10 +120,10 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, LoginResult>> getLoginData() async {
+  Either<Failure, UserEntity> getLoginData() {
     try {
-      final res = await localDatasource.getLoginData();
-      return right(res);
+      final resData = localDatasource.getLoginData();
+      return right(UserEntity(resData.name, resData.userId));
     } catch (e) {
       return left(Failure(e.toString()));
     }
