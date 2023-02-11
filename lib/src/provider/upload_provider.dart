@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_story/src/core/common/failure.dart';
@@ -12,6 +13,7 @@ class UploadProvider extends ChangeNotifier {
 
   bool isUploading = false;
   String message = "";
+  bool isError = false;
   CommonResponse? uploadResponse;
 
   Future<void> upload(
@@ -22,6 +24,7 @@ class UploadProvider extends ChangeNotifier {
     message = "";
     uploadResponse = null;
     isUploading = true;
+    isError = false;
     notifyListeners();
 
     Either<Failure, CommonResponse> failOrSuccess =
@@ -30,11 +33,13 @@ class UploadProvider extends ChangeNotifier {
     failOrSuccess.fold((l) {
       isUploading = false;
       message = l.message;
+      isError = true;
       notifyListeners();
     }, (r) {
       uploadResponse = r;
       message = uploadResponse?.message ?? "success";
       isUploading = false;
+      isError = false;
       notifyListeners();
     });
   }
@@ -89,5 +94,26 @@ class UploadProvider extends ChangeNotifier {
     } while (length > 1000000);
 
     return newByte;
+  }
+
+  String? imagePath;
+
+  XFile? imageFile;
+
+  void setImagePath(String? value) {
+    imagePath = value;
+    notifyListeners();
+  }
+
+  void setImageFile(XFile? value) {
+    imageFile = value;
+    notifyListeners();
+  }
+
+  void clean() {
+    imagePath = null;
+    imageFile = null;
+    message = "";
+    uploadResponse = null;
   }
 }
