@@ -6,6 +6,7 @@ import 'package:flutter_story/src/core/data/repository.dart';
 import 'package:flutter_story/src/provider/auth_provider.dart';
 import 'package:flutter_story/src/provider/localization_provider.dart';
 import 'package:flutter_story/src/provider/story_list_provider.dart';
+import 'package:flutter_story/src/provider/upload_provider.dart';
 import 'package:flutter_story/src/routes/route_information_parser.dart';
 import 'package:flutter_story/src/routes/router_delegate.dart';
 import 'package:http/http.dart';
@@ -36,6 +37,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => LocalizationProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider(repository)),
         ChangeNotifierProvider(create: (_) => StoryListProvider(repository)),
+        ChangeNotifierProvider(create: (_) => UploadProvider(repository)),
       ],
       child: MaterialApp.router(
         routeInformationParser: MyRouteInformationParser(),
