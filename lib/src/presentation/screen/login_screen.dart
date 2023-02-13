@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_story/src/core/common/localization.dart';
+import 'package:flutter_story/src/presentation/widget/dropdown_language.dart';
 import 'package:flutter_story/src/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login Screen"),
+        title: Text(AppLocalizations.of(context)!.login),
+        actions: const [DropdownButtonHideUnderline(child: DropdownLanguage())],
       ),
       body: Center(
         child: ConstrainedBox(
@@ -46,11 +49,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Center(
+                    child: Text(
+                      "Story App",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   TextFormField(
                     controller: emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email.';
+                        return AppLocalizations.of(context)!
+                            .pleaseEnterYourEmail;
                       }
                       return null;
                     },
@@ -62,12 +75,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: "Password",
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.password,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password.';
+                        return AppLocalizations.of(context)!
+                            .pleaseEnterYourPassword;
                       }
                       return null;
                     },
@@ -97,12 +111,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             }
                           },
-                          child: const Text("LOGIN"),
+                          child: Text(AppLocalizations.of(context)!.login),
                         ),
                   const SizedBox(height: 8),
                   OutlinedButton(
                     onPressed: () => widget.onRegister(),
-                    child: const Text("REGISTER"),
+                    child: Text(AppLocalizations.of(context)!.register),
                   ),
                 ],
               ),
