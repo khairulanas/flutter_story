@@ -1,0 +1,60 @@
+{
+  "@freePackageTitle": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "@paidPackagePrice": {
+    "placeholders": {
+      "feeSubscription": {
+        "format": "simpleCurrency",
+        "type": "int"
+      }
+    }
+  },
+  "@paidPackageTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "addDescription": "Tambah deskripsi",
+  "benefitFeatureItem1": "Akses semua kelas",
+  "benefitFeatureItem2": "Ujian",
+  "benefitFeatureItem3": "Kirim Proyek",
+  "benefitFeatureTitle1": "Fitur Utama",
+  "benefitFeatureTitle2": "Uji Coba",
+  "benefitFeatureTitle3": "Langganan",
+  "benefitTitle": "Keuntungan Langganan",
+  "camera": "Kamera",
+  "changeLanguage": "Ubah bahasa",
+  "costSubtitle": "Pilih paket langganan sebagai investasi belajar yang sesuai dengan kebutuhan Anda.",
+  "costTitle": "Biaya Langganan",
+  "createNewStory": "buat cerita baru",
+  "emptyStoryList": "Data cerita sedang tidak ada.",
+  "freePackageButton": "Coba sekarang",
+  "freePackagePrice": "Gratis",
+  "freePackageTitle": "Berlangganan {day,plural, other{{day} hari}}",
+  "gallery": "Galeri",
+  "logOut": "Keluar",
+  "login": "Masuk",
+  "name": "Nama",
+  "orText": "atau",
+  "paidPackageButton": "Pilih Paket",
+  "paidPackagePrice": "{feeSubscription}",
+  "paidPackageTitle": "Berlangganan {month,plural, other{{month} bulan}}",
+  "password": "Kata sandi",
+  "pleaseEnterYourEmail": "Silahkan masukkan email Anda.",
+  "pleaseEnterYourName": "Silahkan masukkan nama Anda.",
+  "pleaseEnterYourPassword": "Silahkan masukkan kata sandi Anda.",
+  "register": "Daftar",
+  "registerNewAccount": "Daftar akun baru",
+  "storyDetail": "detail cerita",
+  "successRegisterMessage": "Pendaftaran behasil, silahkan masuk dengan email dan password Anda.",
+  "titleAppBar": "Dicoding Academy",
+  "uploadStory": "Unggah cerita",
+  "wellcome": "Selamat datang"
+}

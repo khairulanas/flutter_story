@@ -12,6 +12,8 @@ import 'package:flutter_story/src/routes/router_delegate.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
+import 'core/common/localization.dart';
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -39,11 +41,28 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => StoryListProvider(repository)),
         ChangeNotifierProvider(create: (_) => UploadProvider(repository)),
       ],
-      child: MaterialApp.router(
-        routeInformationParser: MyRouteInformationParser(),
-        routerDelegate: MyRouterDelegate(repository),
-        theme: ThemeData(primaryColor: Colors.black87),
-      ),
+      child: Consumer<LocalizationProvider>(builder: (_, prov, __) {
+        return MaterialApp.router(
+          routeInformationParser: MyRouteInformationParser(),
+          routerDelegate: MyRouterDelegate(repository),
+          theme: ThemeData(
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            ),
+            scaffoldBackgroundColor: Colors.grey.shade50,
+            outlinedButtonTheme: OutlinedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey.shade800,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ),
+          locale: prov.locale,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        );
+      }),
     );
   }
 }
