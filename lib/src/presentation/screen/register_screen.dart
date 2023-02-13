@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_story/src/core/common/localization.dart';
 
 import 'package:flutter_story/src/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register Screen"),
+        title: Text(AppLocalizations.of(context)!.register),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -54,7 +55,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email.';
+                        return AppLocalizations.of(context)!
+                            .pleaseEnterYourEmail;
                       }
                       return null;
                     },
@@ -67,24 +69,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: nameController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your name.';
+                        return AppLocalizations.of(context)!
+                            .pleaseEnterYourName;
                       }
                       return null;
                     },
-                    decoration: const InputDecoration(
-                      hintText: "Name",
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.name,
                     ),
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: "Password",
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.password,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password.';
+                        return AppLocalizations.of(context)!
+                            .pleaseEnterYourPassword;
                       }
                       return null;
                     },
@@ -105,8 +109,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 widget.onRegister();
                                 if (mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("success login"),
+                                    SnackBar(
+                                      content: Text(
+                                          AppLocalizations.of(context)!
+                                              .successRegisterMessage),
                                     ),
                                   );
                                 }
@@ -121,12 +127,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               }
                             }
                           },
-                          child: const Text("REGISTER"),
+                          child: Text(AppLocalizations.of(context)!.register),
                         ),
                   const SizedBox(height: 8),
                   OutlinedButton(
                     onPressed: () => widget.onLogin(),
-                    child: const Text("LOGIN"),
+                    child: Text(AppLocalizations.of(context)!.login),
                   ),
                 ],
               ),
