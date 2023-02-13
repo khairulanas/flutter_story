@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_story/src/core/common/failure.dart';
 import 'package:flutter_story/src/core/data/datasource/local_datasource.dart';
@@ -44,6 +46,8 @@ class RepositoryImpl implements Repository {
         password: password,
       );
       return right(resData);
+    } on SocketException {
+      return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -57,6 +61,8 @@ class RepositoryImpl implements Repository {
       await localDatasource.saveLoginData(resData.loginResult);
       return right(
           UserEntity(resData.loginResult.name, resData.loginResult.userId));
+    } on SocketException {
+      return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -76,6 +82,8 @@ class RepositoryImpl implements Repository {
           fileName: fileName,
           token: token);
       return right(resData);
+    } on SocketException {
+      return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -87,6 +95,8 @@ class RepositoryImpl implements Repository {
       final token = localDatasource.getToken();
       final res = await remoteDatasource.getAllStories(token);
       return right(res.listStory.map((e) => e.toEntity()).toList());
+    } on SocketException {
+      return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -98,6 +108,8 @@ class RepositoryImpl implements Repository {
       final token = localDatasource.getToken();
       final res = await remoteDatasource.getStoriesById(id, token);
       return right(res.story.toEntity());
+    } on SocketException {
+      return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
       return left(Failure(e.toString()));
     }
