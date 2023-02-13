@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_story/src/core/common/date_format.dart';
+import 'package:flutter_story/src/core/common/localization.dart';
 import 'package:flutter_story/src/core/common/result_state.dart';
 import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
+import 'package:flutter_story/src/presentation/widget/dropdown_language.dart';
 import 'package:flutter_story/src/provider/auth_provider.dart';
 import 'package:flutter_story/src/provider/localization_provider.dart';
 import 'package:flutter_story/src/provider/story_list_provider.dart';
@@ -41,16 +44,40 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
             builder: (_, authProv, localizeProv, __) {
           return ListView(
             children: [
-              DrawerHeader(child: Text(authProv.userData.name)),
+              DrawerHeader(
+                decoration: const BoxDecoration(color: Colors.blueAccent),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.wellcome,
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      authProv.userData.name,
+                      style:
+                          const TextStyle(color: Colors.yellow, fontSize: 15.0),
+                    ),
+                  ],
+                ),
+              ),
               ListTile(
-                title: const Text("log out"),
+                  title: Text(AppLocalizations.of(context)!.changeLanguage),
+                  subtitle: const DropdownLanguage()),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.logOut),
                 onTap: () async {
                   final isSuccessLogOut = await authProv.logout();
                   if (isSuccessLogOut) {
                     widget.onLogout();
                   }
                 },
-              )
+              ),
             ],
           );
         }),
@@ -75,39 +102,58 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
           }
 
           List<StoryEnity> stories = storyProv.listStory;
+          if (stories.isEmpty) {
+            return Center(
+              child: Text(AppLocalizations.of(context)!.emptyStoryList),
+            );
+          }
           return ListView.builder(
             itemCount: stories.length,
-            itemBuilder: (context, index) => InkWell(
-              onTap: () {
-                widget.onTapped(stories[index].id);
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      Image.network(
-                        stories[index].photoUrl,
-                        width: 150,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(stories[index].name),
-                            Text(stories[index].createdAt.toString())
-                          ],
+            itemBuilder: (context, index) {
+              final story = stories[index];
+              return InkWell(
+                onTap: () {
+                  widget.onTapped(story.id);
+                },
+                child: Card(
+                  elevation: 8,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Image.network(
+                          story.photoUrl,
+                          width: 150,
+                          height: 100,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.image_not_supported),
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                story.name,
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(dateFormat(context, story.createdAt))
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
