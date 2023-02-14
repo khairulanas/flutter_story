@@ -155,6 +155,8 @@ class _DetailSectionState extends State<DetailSection>
                       ),
                     ),
                     const SizedBox(height: 8),
+                    const Divider(),
+                    const SizedBox(height: 8),
                     Text(
                       'Longitude: ${widget.longitude}',
                       style: const TextStyle(
