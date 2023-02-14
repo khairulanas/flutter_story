@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_story/src/presentation/widget/camera_view.dart';
+import 'package:flutter_story/src/core/common/localization.dart';
+
 import 'package:flutter_story/src/provider/story_list_provider.dart';
 import 'package:flutter_story/src/provider/upload_provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,20 +29,7 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AddNewStoryScreen'),
-        actions: [
-          IconButton(
-            onPressed: () => _onUpload(),
-
-            /// todo-04-after-01: update the widget
-            icon: context.watch<UploadProvider>().isUploading
-                ? const CircularProgressIndicator(
-                    color: Colors.white,
-                  )
-                : const Icon(Icons.upload),
-            tooltip: "Unggah",
-          ),
-        ],
+        title: Text(AppLocalizations.of(context)!.addNewStoryScreen),
       ),
       body: SafeArea(
         child: Padding(
@@ -51,7 +38,7 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 300,
+                  height: 200,
                   child: context.watch<UploadProvider>().imagePath == null
                       ? const Align(
                           alignment: Alignment.center,
@@ -69,18 +56,45 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: () => _onGalleryView(),
-                        child: const Text("Gallery"),
+                        child: Text(AppLocalizations.of(context)!.gallery),
                       ),
                       ElevatedButton(
                         onPressed: () => _onCameraView(),
-                        child: const Text("Camera"),
+                        child: Text(AppLocalizations.of(context)!.camera),
                       ),
                     ],
                   ),
                 ),
-                TextField(
-                  controller: descriptionController,
-                )
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.grey[200],
+                  ),
+                  child: TextField(
+                    controller: descriptionController,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: AppLocalizations.of(context)!.writeSomething,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => _onUpload(),
+                  child: context.watch<UploadProvider>().isUploading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(AppLocalizations.of(context)!.uploadStory),
+                            const Icon(Icons.upload),
+                          ],
+                        ),
+                ),
               ],
             ),
           ),
