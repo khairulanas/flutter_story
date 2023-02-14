@@ -9,10 +9,10 @@ class MyRouteInformationParser
     final uri = Uri.parse(routeInformation.location.toString());
 
     if (uri.pathSegments.isEmpty) {
-      // without path parameter => "/"
+      /// without path parameter => "/"
       return PageConfiguration.home();
     } else if (uri.pathSegments.length == 1) {
-      // path parameter => "/aaa"
+      /// path parameter => "/aaa"
       final first = uri.pathSegments[0].toLowerCase();
       if (first == 'home') {
         return PageConfiguration.home();
@@ -28,7 +28,7 @@ class MyRouteInformationParser
         return PageConfiguration.unknown();
       }
     } else if (uri.pathSegments.length == 2) {
-      // path parameter => "/aaa/bbb"
+      /// path parameter => "/aaa/bbb"
       final first = uri.pathSegments[0].toLowerCase();
       final second = uri.pathSegments[1].toLowerCase();
       final quoteId = int.tryParse(second) ?? 0;
