@@ -1,5 +1,6 @@
 {
   "addDescription": "Add description",
+  "addNewStoryScreen": "Create new story",
   "benefitFeatureItem1": "All-Access Course",
   "benefitFeatureItem2": "Exam",
   "benefitFeatureItem3": "Send Project",
@@ -33,6 +34,8 @@
   "storyDetail": "Story detail",
   "successRegisterMessage": "Registration complete, please login with your email and password.",
   "titleAppBar": "Dicoding Academy",
+  "upload": "Upload",
   "uploadStory": "Upload story",
-  "wellcome": "Wellcome"
+  "wellcome": "Wellcome",
+  "writeSomething": "Write something..."
 }

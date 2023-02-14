@@ -22,6 +22,7 @@
     }
   },
   "addDescription": "Tambah deskripsi",
+  "addNewStoryScreen": "buat cerita baru",
   "benefitFeatureItem1": "Akses semua kelas",
   "benefitFeatureItem2": "Ujian",
   "benefitFeatureItem3": "Kirim Proyek",
@@ -55,6 +56,8 @@
   "storyDetail": "detail cerita",
   "successRegisterMessage": "Pendaftaran behasil, silahkan masuk dengan email dan password Anda.",
   "titleAppBar": "Dicoding Academy",
+  "upload": "Unggah",
   "uploadStory": "Unggah cerita",
-  "wellcome": "Selamat datang"
+  "wellcome": "Selamat datang",
+  "writeSomething": "Tulis sesuatu..."
 }
