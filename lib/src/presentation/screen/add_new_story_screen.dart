@@ -151,7 +151,10 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
 
     final isMacOS = defaultTargetPlatform == TargetPlatform.macOS;
     final isLinux = defaultTargetPlatform == TargetPlatform.linux;
-    if (isMacOS || isLinux) return;
+    const isWeb = kIsWeb;
+    if (!isWeb) {
+      if (isMacOS || isLinux) return;
+    }
 
     final picker = ImagePicker();
 
