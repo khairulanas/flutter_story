@@ -96,12 +96,15 @@ class MyRouterDelegate extends RouterDelegate<PageConfiguration>
       isRegister = false;
     } else if (configuration.isRegisterPage) {
       isRegister = true;
+    } else if (configuration.createStory) {
+      isCreateNewStrory = true;
     } else if (configuration.isHomePage ||
         configuration.isLoginPage ||
         configuration.isSplashPage) {
       isUnknown = false;
       selectedStory = null;
       isRegister = false;
+      isCreateNewStrory = false;
     } else if (configuration.isDetailPage) {
       isUnknown = false;
       isRegister = false;
