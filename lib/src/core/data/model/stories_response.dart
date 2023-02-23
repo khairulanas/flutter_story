@@ -1,7 +1,10 @@
-import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
-
 import 'story_model.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'stories_response.g.dart';
+
+@JsonSerializable()
 class StoriesResponse {
   final bool error;
   final String message;
@@ -9,10 +12,8 @@ class StoriesResponse {
 
   StoriesResponse(this.error, this.message, this.listStory);
 
-  factory StoriesResponse.fromJson(Map json) => StoriesResponse(
-        json["error"],
-        json["message"],
-        List<StoryModel>.from(
-            json["listStory"].map((x) => StoryModel.fromJson(x))),
-      );
+  factory StoriesResponse.fromJson(Map<String, dynamic> json) =>
+      _$StoriesResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StoriesResponseToJson(this);
 }

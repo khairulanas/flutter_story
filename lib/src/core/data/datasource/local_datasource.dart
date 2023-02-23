@@ -1,6 +1,8 @@
 import 'package:flutter_story/src/core/data/model/common_response.dart';
-import 'package:flutter_story/src/core/data/model/login_response.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../model/login_result.dart';
 
 abstract class LocalDatasource {
   Future<CommonResponse> saveLoginData(LoginResult loginData);

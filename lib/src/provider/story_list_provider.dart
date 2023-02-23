@@ -23,7 +23,6 @@ class StoryListProvider with ChangeNotifier {
       state = ResultState.loading;
       notifyListeners();
     }
-    print("called api");
 
     final res = await repository.getAllStoriesWithPage(pageItems!);
     res.fold((l) {
@@ -36,13 +35,12 @@ class StoryListProvider with ChangeNotifier {
       }
       listStory.addAll(r);
       listStory.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      print(r.length);
+
       if (r.length < sizeItems) {
         pageItems = null;
       } else {
         pageItems = pageItems! + 1;
       }
-      print(pageItems);
     });
 
     notifyListeners();
