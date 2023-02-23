@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 
 import '../model/common_response.dart';
 import '../model/stories_response.dart';
+import '../model/story_response.dart';
 
 abstract class RemoteDatasource {
   Future<CommonResponse> register({
