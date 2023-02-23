@@ -4,6 +4,7 @@ import 'package:flutter_story/src/core/common/localization.dart';
 import 'package:flutter_story/src/core/common/result_state.dart';
 import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
 import 'package:flutter_story/src/presentation/widget/dropdown_language.dart';
+import 'package:flutter_story/src/presentation/widget/loading_animation_widget.dart';
 import 'package:flutter_story/src/provider/auth_provider.dart';
 import 'package:flutter_story/src/provider/localization_provider.dart';
 import 'package:flutter_story/src/provider/story_list_provider.dart';
@@ -94,9 +95,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
         builder: (_, storyProv, __) {
           final state = storyProv.state;
           if (state == ResultState.loading) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
+            return const LoadingAnimationWidget();
           } else if (state == ResultState.error) {
             return Center(
               child: Text(storyProv.errMessage),

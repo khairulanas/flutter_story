@@ -6,6 +6,7 @@ import 'package:flutter_story/src/core/common/result_state.dart';
 import 'package:flutter_story/src/core/data/datasource/local_datasource.dart';
 import 'package:flutter_story/src/core/data/datasource/remote_datasource.dart';
 import 'package:flutter_story/src/core/data/repository.dart';
+import 'package:flutter_story/src/presentation/widget/loading_animation_widget.dart';
 import 'package:flutter_story/src/provider/story_detail_provider.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -30,9 +31,7 @@ class StoryDetailScreen extends StatelessWidget {
         body: Consumer<StoryDetailProvider>(builder: (_, prov, __) {
           final state = prov.state;
           if (state == ResultState.loading) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
+            return const LoadingAnimationWidget();
           } else if (state == ResultState.error) {
             return Center(
               child: Text(prov.errMessage),
