@@ -1,5 +1,10 @@
 import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'story_model.g.dart';
+
+@JsonSerializable()
 class StoryModel {
   StoryModel({
     required this.id,
@@ -19,15 +24,10 @@ class StoryModel {
   double? lat;
   double? lon;
 
-  factory StoryModel.fromJson(Map<String, dynamic> json) => StoryModel(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        photoUrl: json["photoUrl"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        lat: json["lat"]?.toDouble(),
-        lon: json["lon"]?.toDouble(),
-      );
+  factory StoryModel.fromJson(Map<String, dynamic> json) =>
+      _$StoryModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StoryModelToJson(this);
 
   StoryEnity toEntity() =>
       StoryEnity(id, name, description, photoUrl, createdAt, lat, lon);
