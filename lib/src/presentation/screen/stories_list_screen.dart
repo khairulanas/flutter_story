@@ -26,6 +26,8 @@ class StoriesListScreen extends StatefulWidget {
 }
 
 class _StoriesListScreenState extends State<StoriesListScreen> {
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  List<StoryEnity> listItems = [];
   @override
   void initState() {
     Future.microtask(() => context.read<AuthProvider>().loadUserData());
@@ -107,55 +109,93 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
               child: Text(AppLocalizations.of(context)!.emptyStoryList),
             );
           }
-          return ListView.builder(
-            itemCount: stories.length,
-            itemBuilder: (context, index) {
-              final story = stories[index];
-              return InkWell(
-                onTap: () {
-                  widget.onTapped(story.id);
-                },
-                child: Card(
-                  elevation: 8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Image.network(
-                          story.photoUrl,
-                          width: 150,
-                          height: 100,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.image_not_supported),
-                          fit: BoxFit.cover,
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                story.name,
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(dateFormat(context, story.createdAt))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+          var future = Future(() {});
+          for (var i = 0; i < stories.length; i++) {
+            future = future.then((_) {
+              return Future.delayed(const Duration(milliseconds: 100), () {
+                listItems.add(stories[i]);
+                listKey.currentState!.insertItem(listItems.length - 1);
+              });
+            });
+          }
+          return AnimatedList(
+            key: listKey,
+            initialItemCount: listItems.length,
+            itemBuilder: (context, index, animation) {
+              final story = listItems[index];
+              return ListItemWidget(
+                widget: widget,
+                story: story,
+                animation: animation,
               );
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class ListItemWidget extends StatelessWidget {
+  const ListItemWidget({
+    super.key,
+    required this.widget,
+    required this.story,
+    required this.animation,
+  });
+
+  final StoriesListScreen widget;
+  final StoryEnity story;
+  final Animation<double> animation;
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(-1, 0),
+        end: const Offset(0, 0),
+      ).animate(animation),
+      child: InkWell(
+        onTap: () {
+          widget.onTapped(story.id);
+        },
+        child: Card(
+          elevation: 8,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Image.network(
+                  story.photoUrl,
+                  width: 150,
+                  height: 100,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.image_not_supported),
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        story.name,
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(dateFormat(context, story.createdAt))
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
