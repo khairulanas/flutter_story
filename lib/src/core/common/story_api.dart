@@ -4,5 +4,6 @@ class StoryApi {
   static const String login = "$_base/login";
   static const String addStories = "$_base/stories";
   static const String stories = "$_base/stories";
+  static String storiesWithPage(int page) => "$stories?page=$page&&size=10";
   static String detailStories(String id) => "$stories/$id";
 }

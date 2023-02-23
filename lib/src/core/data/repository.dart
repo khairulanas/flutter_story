@@ -21,6 +21,7 @@ abstract class Repository {
     required String fileName,
   });
   Future<Either<Failure, List<StoryEnity>>> getAllStories();
+  Future<Either<Failure, List<StoryEnity>>> getAllStoriesWithPage(int page);
   Future<Either<Failure, StoryEnity>> getStoryById(String id);
   Future<Either<Failure, bool>> logout();
   bool? isLoggedIn();
@@ -135,6 +136,20 @@ class RepositoryImpl implements Repository {
     try {
       final resData = localDatasource.getLoginData();
       return right(UserEntity(resData.name, resData.userId));
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<StoryEnity>>> getAllStoriesWithPage(
+      int page) async {
+    try {
+      final token = localDatasource.getToken();
+      final res = await remoteDatasource.getAllStoriesWithPage(token, page);
+      return right(res.listStory.map((e) => e.toEntity()).toList());
+    } on SocketException {
+      return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
       return left(Failure(e.toString()));
     }

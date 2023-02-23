@@ -22,6 +22,7 @@ abstract class RemoteDatasource {
     required String token,
   });
   Future<StoriesResponse> getAllStories(String token);
+  Future<StoriesResponse> getAllStoriesWithPage(String token, int page);
   Future<StoryResponse> getStoriesById(String id, String token);
 }
 
@@ -114,5 +115,17 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       throw Exception(CommonResponse.fromJson(jsonDecode(res.body)).message);
     }
     return StoryResponse.fromJson(jsonDecode(res.body));
+  }
+
+  @override
+  Future<StoriesResponse> getAllStoriesWithPage(String token, int page) async {
+    final res = await client.get(
+      Uri.parse(StoryApi.storiesWithPage(page)),
+      headers: {"Authorization": "Bearer $token"},
+    );
+    if (res.statusCode != 200) {
+      throw Exception(CommonResponse.fromJson(jsonDecode(res.body)).message);
+    }
+    return StoriesResponse.fromJson(jsonDecode(res.body));
   }
 }

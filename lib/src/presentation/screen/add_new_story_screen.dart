@@ -141,7 +141,7 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
     /// update story list & navigate to story list screen
     if (!mounted) return;
     if (!uploadProvider.isError) {
-      context.read<StoryListProvider>().getStoryList();
+      context.read<StoryListProvider>().getStoryList(isReset: true);
       widget.onSubmit();
     }
   }

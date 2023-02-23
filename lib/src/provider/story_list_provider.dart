@@ -8,22 +8,41 @@ class StoryListProvider with ChangeNotifier {
 
   StoryListProvider(this.repository);
 
+  int? pageItems = 1;
+  int sizeItems = 10;
+
   ResultState state = ResultState.loading;
   List<StoryEnity> listStory = [];
   String errMessage = '';
 
-  Future<void> getStoryList() async {
-    state = ResultState.loading;
-    notifyListeners();
+  Future<void> getStoryList({bool isReset = false}) async {
+    if (isReset) {
+      pageItems = 1;
+    }
+    if (pageItems == 1) {
+      state = ResultState.loading;
+      notifyListeners();
+    }
+    print("called api");
 
-    final res = await repository.getAllStories();
+    final res = await repository.getAllStoriesWithPage(pageItems!);
     res.fold((l) {
       state = ResultState.error;
       errMessage = l.message;
     }, (r) {
       state = ResultState.sucess;
-      listStory = r;
+      if (pageItems == 1) {
+        listStory.clear();
+      }
+      listStory.addAll(r);
       listStory.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      print(r.length);
+      if (r.length < sizeItems) {
+        pageItems = null;
+      } else {
+        pageItems = pageItems! + 1;
+      }
+      print(pageItems);
     });
 
     notifyListeners();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_story/src/core/common/localization.dart';
 import 'package:flutter_story/src/provider/localization_provider.dart';
+import 'package:flutter_story/src/provider/story_list_provider.dart';
 import 'package:provider/provider.dart';
 
 class DropdownLanguage extends StatelessWidget {
@@ -25,6 +26,7 @@ class DropdownLanguage extends StatelessWidget {
               final provider =
                   Provider.of<LocalizationProvider>(context, listen: false);
               provider.setLocale(locale);
+              context.read<StoryListProvider>().pageItems = 1;
             },
           );
         }).toList(),
