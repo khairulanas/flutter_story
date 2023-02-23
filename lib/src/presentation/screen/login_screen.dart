@@ -18,15 +18,34 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
+  late final AnimationController controller;
+  late final Animation<AlignmentGeometry> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    animation = AlignmentTween(
+      begin: Alignment.centerRight,
+      end: Alignment.centerLeft,
+    ).animate(
+        CurvedAnimation(parent: controller, curve: Curves.easeInOutCubic));
+  }
+
   @override
   void dispose() {
+    controller.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -89,29 +108,40 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 8),
                   context.watch<AuthProvider>().isLoadingLogin
                       ? const Center(child: CircularProgressIndicator())
-                      : ElevatedButton(
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              final scaffoldMessenger =
-                                  ScaffoldMessenger.of(context);
-
-                              final authRead = context.read<AuthProvider>();
-
-                              final result = await authRead.login(
-                                  emailController.text,
-                                  passwordController.text);
-                              if (result) {
-                                widget.onLogin();
-                              } else {
-                                scaffoldMessenger.showSnackBar(
-                                  SnackBar(
-                                    content: Text(authRead.errMessage ?? ""),
-                                  ),
-                                );
+                      : AlignTransition(
+                          alignment: animation,
+                          child: ElevatedButton(
+                            onHover: (value) {
+                              if (controller.isAnimating) return;
+                              if (!formKey.currentState!.validate()) {
+                                controller.isCompleted
+                                    ? controller.reverse()
+                                    : controller.forward();
                               }
-                            }
-                          },
-                          child: Text(AppLocalizations.of(context)!.login),
+                            },
+                            onPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                final scaffoldMessenger =
+                                    ScaffoldMessenger.of(context);
+
+                                final authRead = context.read<AuthProvider>();
+
+                                final result = await authRead.login(
+                                    emailController.text,
+                                    passwordController.text);
+                                if (result) {
+                                  widget.onLogin();
+                                } else {
+                                  scaffoldMessenger.showSnackBar(
+                                    SnackBar(
+                                      content: Text(authRead.errMessage ?? ""),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                            child: Text(AppLocalizations.of(context)!.login),
+                          ),
                         ),
                   const SizedBox(height: 8),
                   OutlinedButton(

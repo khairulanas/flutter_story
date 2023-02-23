@@ -40,8 +40,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
         title: const Text('Story App'),
       ),
       drawer: Drawer(
-        child: Consumer2<AuthProvider, LocalizationProvider>(
-            builder: (_, authProv, localizeProv, __) {
+        child: Consumer<LocalizationProvider>(builder: (_, localizeProv, __) {
           return ListView(
             children: [
               DrawerHeader(
@@ -59,7 +58,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
                       height: 10,
                     ),
                     Text(
-                      authProv.userData.name,
+                      context.watch<AuthProvider>().userData.name,
                       style:
                           const TextStyle(color: Colors.yellow, fontSize: 15.0),
                     ),
@@ -72,7 +71,8 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.logOut),
                 onTap: () async {
-                  final isSuccessLogOut = await authProv.logout();
+                  final isSuccessLogOut =
+                      await context.read<AuthProvider>().logout();
                   if (isSuccessLogOut) {
                     widget.onLogout();
                   }
