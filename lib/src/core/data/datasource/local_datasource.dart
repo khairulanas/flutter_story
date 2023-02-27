@@ -32,7 +32,7 @@ class LocalDatasourceImpl implements LocalDatasource {
     final isTokenSaved =
         await sharedPreferences.setString(tokenKey, loginData.token);
     if (isLoginSaved && isUserIdSaved && isTokenSaved && isNameSaved) {
-      return CommonResponse(false, "success");
+      return const CommonResponse(false, "success");
     }
     throw Exception("fail to save data login");
   }

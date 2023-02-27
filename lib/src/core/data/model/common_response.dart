@@ -1,16 +1,12 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'common_response.g.dart';
+part 'common_response.freezed.dart';
 
-@JsonSerializable()
-class CommonResponse {
-  final bool error;
-  final String message;
-
-  CommonResponse(this.error, this.message);
+@Freezed()
+class CommonResponse with _$CommonResponse {
+  const factory CommonResponse(bool error, String message) = _CommonResponse;
 
   factory CommonResponse.fromJson(Map<String, dynamic> json) =>
       _$CommonResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CommonResponseToJson(this);
 }

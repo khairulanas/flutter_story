@@ -6,8 +6,8 @@ part of 'stories_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StoriesResponse _$StoriesResponseFromJson(Map<String, dynamic> json) =>
-    StoriesResponse(
+_$_StoriesResponse _$$_StoriesResponseFromJson(Map<String, dynamic> json) =>
+    _$_StoriesResponse(
       json['error'] as bool,
       json['message'] as String,
       (json['listStory'] as List<dynamic>)
@@ -15,7 +15,7 @@ StoriesResponse _$StoriesResponseFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$StoriesResponseToJson(StoriesResponse instance) =>
+Map<String, dynamic> _$$_StoriesResponseToJson(_$_StoriesResponse instance) =>
     <String, dynamic>{
       'error': instance.error,
       'message': instance.message,

@@ -6,7 +6,8 @@ part of 'story_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StoryModel _$StoryModelFromJson(Map<String, dynamic> json) => StoryModel(
+_$_StoryModel _$$_StoryModelFromJson(Map<String, dynamic> json) =>
+    _$_StoryModel(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
@@ -16,7 +17,7 @@ StoryModel _$StoryModelFromJson(Map<String, dynamic> json) => StoryModel(
       lon: (json['lon'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$StoryModelToJson(StoryModel instance) =>
+Map<String, dynamic> _$$_StoryModelToJson(_$_StoryModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

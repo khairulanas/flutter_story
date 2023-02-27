@@ -1,17 +1,14 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'login_result.g.dart';
 
-@JsonSerializable()
-class LoginResult {
-  final String userId;
-  final String name;
-  final String token;
+part 'login_result.freezed.dart';
 
-  LoginResult(this.userId, this.name, this.token);
+@Freezed()
+class LoginResult with _$LoginResult {
+  const factory LoginResult(String userId, String name, String token) =
+      _LoginResult;
 
   factory LoginResult.fromJson(Map<String, dynamic> json) =>
       _$LoginResultFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LoginResultToJson(this);
 }

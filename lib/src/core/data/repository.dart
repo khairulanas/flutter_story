@@ -95,7 +95,10 @@ class RepositoryImpl implements Repository {
     try {
       final token = localDatasource.getToken();
       final res = await remoteDatasource.getAllStories(token);
-      return right(res.listStory.map((e) => e.toEntity()).toList());
+      return right(res.listStory
+          .map((e) => StoryEnity(e.id, e.name, e.description, e.photoUrl,
+              e.createdAt, e.lat, e.lon))
+          .toList());
     } on SocketException {
       return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
@@ -108,7 +111,14 @@ class RepositoryImpl implements Repository {
     try {
       final token = localDatasource.getToken();
       final res = await remoteDatasource.getStoriesById(id, token);
-      return right(res.story.toEntity());
+      return right(StoryEnity(
+          res.story.id,
+          res.story.name,
+          res.story.description,
+          res.story.photoUrl,
+          res.story.createdAt,
+          res.story.lat,
+          res.story.lon));
     } on SocketException {
       return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
@@ -147,7 +157,10 @@ class RepositoryImpl implements Repository {
     try {
       final token = localDatasource.getToken();
       final res = await remoteDatasource.getAllStoriesWithPage(token, page);
-      return right(res.listStory.map((e) => e.toEntity()).toList());
+      return right(res.listStory
+          .map((e) => StoryEnity(e.id, e.name, e.description, e.photoUrl,
+              e.createdAt, e.lat, e.lon))
+          .toList());
     } on SocketException {
       return left(Failure("no internet", failurType: FailurType.noInternet));
     } catch (e) {
