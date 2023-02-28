@@ -18,6 +18,7 @@
   "freePackagePrice": "Free",
   "freePackageTitle": "{day,plural, =1{{day} day} other{{day} days}} Subscription",
   "gallery": "Gallery",
+  "location": "Location",
   "logOut": "Log out",
   "login": "Login",
   "name": "Name",

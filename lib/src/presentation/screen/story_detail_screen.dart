@@ -6,8 +6,10 @@ import 'package:flutter_story/src/core/common/result_state.dart';
 import 'package:flutter_story/src/core/data/datasource/local_datasource.dart';
 import 'package:flutter_story/src/core/data/datasource/remote_datasource.dart';
 import 'package:flutter_story/src/core/data/repository.dart';
+import 'package:flutter_story/src/presentation/screen/maps/maps_screen.dart';
 import 'package:flutter_story/src/presentation/widget/loading_animation_widget.dart';
 import 'package:flutter_story/src/provider/story_detail_provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
@@ -44,8 +46,8 @@ class StoryDetailScreen extends StatelessWidget {
               name: story.name,
               description: story.description,
               date: dateFormat(context, story.createdAt),
-              longitude: story.lon == null ? "-" : story.lon.toString(),
-              latitude: story.lat == null ? "-" : story.lat.toString());
+              longitude: story.lon,
+              latitude: story.lat);
         }),
       ),
     );
@@ -57,8 +59,8 @@ class DetailSection extends StatefulWidget {
   final String name;
   final String description;
   final String date;
-  final String longitude;
-  final String latitude;
+  final double? longitude;
+  final double? latitude;
 
   const DetailSection({
     super.key,
@@ -157,20 +159,14 @@ class _DetailSectionState extends State<DetailSection>
                     const Divider(),
                     const SizedBox(height: 8),
                     Text(
-                      'Longitude: ${widget.longitude}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                      "${AppLocalizations.of(context)!.location} : (${widget.latitude ?? "-"},${widget.longitude ?? "-"})",
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      'Latitude: ${widget.latitude}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    (widget.latitude != null && widget.longitude != null)
+                        ? MapsWidget(
+                            latLng: LatLng(widget.latitude!, widget.longitude!),
+                          )
+                        : const Text('-')
                   ],
                 ),
               ),
