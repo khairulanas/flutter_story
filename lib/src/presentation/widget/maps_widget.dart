@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -33,11 +35,15 @@ class _MapsWidgetState extends State<MapsWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500,
+      height: 300,
       child: Center(
         child: Stack(
           children: [
             GoogleMap(
+              gestureRecognizers: {
+                Factory<OneSequenceGestureRecognizer>(
+                    () => EagerGestureRecognizer())
+              },
               markers: markers,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,

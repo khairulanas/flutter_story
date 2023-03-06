@@ -6,12 +6,14 @@ import 'package:flutter_story/src/core/common/result_state.dart';
 import 'package:flutter_story/src/core/data/datasource/local_datasource.dart';
 import 'package:flutter_story/src/core/data/datasource/remote_datasource.dart';
 import 'package:flutter_story/src/core/data/repository.dart';
-import 'package:flutter_story/src/presentation/screen/maps/maps_screen.dart';
+import 'package:flutter_story/src/presentation/widget/maps_widget.dart';
 import 'package:flutter_story/src/presentation/widget/loading_animation_widget.dart';
 import 'package:flutter_story/src/provider/story_detail_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+
+import 'package:geocoding/geocoding.dart' as geo;
 
 class StoryDetailScreen extends StatelessWidget {
   final String storyId;
@@ -158,15 +160,30 @@ class _DetailSectionState extends State<DetailSection>
                     const SizedBox(height: 8),
                     const Divider(),
                     const SizedBox(height: 8),
-                    Text(
-                      "${AppLocalizations.of(context)!.location} : (${widget.latitude ?? "-"},${widget.longitude ?? "-"})",
-                    ),
+                    (widget.latitude == null)
+                        ? const SizedBox()
+                        : FutureBuilder(
+                            future: geo.placemarkFromCoordinates(
+                                widget.latitude!, widget.longitude!),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                final place = snapshot.data![0];
+                                final street = place.street!;
+                                final address =
+                                    '${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+                                return Text(
+                                  "${AppLocalizations.of(context)!.location} : $street, $address",
+                                );
+                              }
+                              return const CircularProgressIndicator();
+                            }),
                     const SizedBox(height: 8),
                     (widget.latitude != null && widget.longitude != null)
                         ? MapsWidget(
                             latLng: LatLng(widget.latitude!, widget.longitude!),
                           )
-                        : const Text('-')
+                        : const SizedBox()
                   ],
                 ),
               ),

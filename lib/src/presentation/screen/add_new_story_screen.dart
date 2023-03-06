@@ -3,11 +3,16 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_story/src/core/common/localization.dart';
+import 'package:flutter_story/src/presentation/screen/map_picker_widget.dart';
 
 import 'package:flutter_story/src/provider/story_list_provider.dart';
 import 'package:flutter_story/src/provider/upload_provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import 'package:geocoding/geocoding.dart' as geo;
 
 class AddNewStoryScreen extends StatefulWidget {
   final Function() onSubmit;
@@ -19,6 +24,9 @@ class AddNewStoryScreen extends StatefulWidget {
 
 class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
   final TextEditingController descriptionController = TextEditingController();
+  double initialChildsize = 0;
+  geo.Placemark? _placemark;
+  LatLng? _latLng;
   @override
   void dispose() {
     descriptionController.dispose();
@@ -31,74 +39,117 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.addNewStoryScreen),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: context.watch<UploadProvider>().imagePath == null
-                      ? const Align(
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.image,
-                            size: 100,
-                          ),
-                        )
-                      : _showImage(),
-                ),
-                SizedBox(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () => _onGalleryView(),
-                        child: Text(AppLocalizations.of(context)!.gallery),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => _onCameraView(),
-                        child: Text(AppLocalizations.of(context)!.camera),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.grey[200],
-                  ),
-                  child: TextField(
-                    controller: descriptionController,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: AppLocalizations.of(context)!.writeSomething,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 200,
+                      child: context.watch<UploadProvider>().imagePath == null
+                          ? const Align(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.image,
+                                size: 100,
+                              ),
+                            )
+                          : _showImage(),
                     ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => _onUpload(),
-                  child: context.watch<UploadProvider>().isUploading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(AppLocalizations.of(context)!.uploadStory),
-                            const Icon(Icons.upload),
-                          ],
+                    SizedBox(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _onGalleryView(),
+                            child: Text(AppLocalizations.of(context)!.gallery),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _onCameraView(),
+                            child: Text(AppLocalizations.of(context)!.camera),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    _placemark == null
+                        ? const SizedBox()
+                        : PlacemarkWidget(placemark: _placemark!),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          initialChildsize = 0.8;
+                        });
+                      },
+                      child: Text(AppLocalizations.of(context)!.location),
+                    ),
+                    const Divider(),
+                    Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.grey[200],
+                      ),
+                      child: TextField(
+                        controller: descriptionController,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText:
+                              AppLocalizations.of(context)!.writeSomething,
                         ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _onUpload(),
+                      child: context.watch<UploadProvider>().isUploading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(AppLocalizations.of(context)!.uploadStory),
+                                const Icon(Icons.upload),
+                              ],
+                            ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          DraggableScrollableSheet(
+            initialChildSize: initialChildsize,
+            minChildSize: 0,
+            maxChildSize: 0.8,
+            builder: (context, scrollController) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: MapPickerWidget(
+                  onCancelPressed: () {
+                    setState(() {
+                      initialChildsize = 0;
+                    });
+                  },
+                  onSavePressed: (placemark, latLng) {
+                    setState(() {
+                      _placemark = placemark;
+                      _latLng = latLng;
+                      initialChildsize = 0;
+                    });
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -122,10 +173,7 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
 
     /// upload the document
     await uploadProvider.upload(
-      newBytes,
-      fileName,
-      descriptionController.text,
-    );
+        newBytes, fileName, descriptionController.text, _latLng);
 
     /// remove the image
     if (uploadProvider.uploadResponse != null) {
