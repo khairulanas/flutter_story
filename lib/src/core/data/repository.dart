@@ -7,6 +7,7 @@ import 'package:flutter_story/src/core/data/datasource/remote_datasource.dart';
 import 'package:flutter_story/src/core/data/model/common_response.dart';
 import 'package:flutter_story/src/core/domain/entities/story_entity.dart';
 import 'package:flutter_story/src/core/domain/entities/user_entity.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class Repository {
   Future<Either<Failure, CommonResponse>> register({
@@ -15,11 +16,11 @@ abstract class Repository {
     required String password,
   });
   Future<Either<Failure, UserEntity>> login(String email, String password);
-  Future<Either<Failure, CommonResponse>> addNewStory({
-    required String description,
-    required List<int> photoBytes,
-    required String fileName,
-  });
+  Future<Either<Failure, CommonResponse>> addNewStory(
+      {required String description,
+      required List<int> photoBytes,
+      required String fileName,
+      required LatLng? latLng});
   Future<Either<Failure, List<StoryEnity>>> getAllStories();
   Future<Either<Failure, List<StoryEnity>>> getAllStoriesWithPage(int page);
   Future<Either<Failure, StoryEnity>> getStoryById(String id);
@@ -74,6 +75,7 @@ class RepositoryImpl implements Repository {
     required String description,
     required List<int> photoBytes,
     required String fileName,
+    required LatLng? latLng,
   }) async {
     try {
       final token = localDatasource.getToken();
@@ -81,6 +83,7 @@ class RepositoryImpl implements Repository {
           description: description,
           photoBytes: photoBytes,
           fileName: fileName,
+          latLng: latLng,
           token: token);
       return right(resData);
     } on SocketException {

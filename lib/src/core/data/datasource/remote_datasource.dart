@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_story/src/core/common/story_api.dart';
 import 'package:flutter_story/src/core/data/model/login_response.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 
 import '../model/common_response.dart';
@@ -16,12 +17,12 @@ abstract class RemoteDatasource {
     required String password,
   });
   Future<LoginResponse> login(String email, String password);
-  Future<CommonResponse> addNewStory({
-    required String description,
-    required List<int> photoBytes,
-    required String fileName,
-    required String token,
-  });
+  Future<CommonResponse> addNewStory(
+      {required String description,
+      required List<int> photoBytes,
+      required String fileName,
+      required String token,
+      LatLng? latLng});
   Future<StoriesResponse> getAllStories(String token);
   Future<StoriesResponse> getAllStoriesWithPage(String token, int page);
   Future<StoryResponse> getStoriesById(String id, String token);
@@ -58,12 +59,12 @@ class RemoteDatasourceImpl implements RemoteDatasource {
   }
 
   @override
-  Future<CommonResponse> addNewStory({
-    required String description,
-    required List<int> photoBytes,
-    required String fileName,
-    required String token,
-  }) async {
+  Future<CommonResponse> addNewStory(
+      {required String description,
+      required List<int> photoBytes,
+      required String fileName,
+      required String token,
+      LatLng? latLng}) async {
     final request = MultipartRequest("POST", Uri.parse(StoryApi.addStories));
 
     final multiPartFile = MultipartFile.fromBytes(
@@ -74,6 +75,12 @@ class RemoteDatasourceImpl implements RemoteDatasource {
     final Map<String, String> fields = {
       "description": description,
     };
+
+    if (latLng != null) {
+      fields
+          .addAll({"lat": "${latLng.latitude}", "lon": "${latLng.longitude}"});
+    }
+
     final Map<String, String> headers = {
       "Content-type": "multipart/form-data",
       "Authorization": "Bearer $token"
