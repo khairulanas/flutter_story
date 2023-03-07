@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:geocoding/geocoding.dart' as geo;
+
 class MapsWidget extends StatefulWidget {
   final LatLng latLng;
   const MapsWidget({super.key, required this.latLng});
@@ -15,22 +17,6 @@ class _MapsWidgetState extends State<MapsWidget> {
   late GoogleMapController mapController;
   MapType selectedMapType = MapType.normal;
   Set<Marker> markers = <Marker>{};
-
-  @override
-  void initState() {
-    super.initState();
-
-    final marker = Marker(
-      markerId: const MarkerId("currentLocation"),
-      position: widget.latLng,
-      onTap: () {
-        mapController.animateCamera(
-          CameraUpdate.newLatLngZoom(widget.latLng, 18),
-        );
-      },
-    );
-    markers.add(marker);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +39,31 @@ class _MapsWidgetState extends State<MapsWidget> {
                 zoom: 18,
                 target: widget.latLng,
               ),
-              onMapCreated: (controller) {
+              onMapCreated: (controller) async {
+                var street = "";
+                var address = "";
+                try {
+                  final info = await geo.placemarkFromCoordinates(
+                      widget.latLng.latitude, widget.latLng.longitude);
+                  final place = info[0];
+                  street = place.street!;
+                  address =
+                      '${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+                } catch (e) {
+                  street = "";
+                  address = "";
+                }
+
+                final marker = Marker(
+                  markerId: const MarkerId("source"),
+                  position: widget.latLng,
+                  infoWindow: InfoWindow(
+                    title: street,
+                    snippet: address,
+                  ),
+                );
                 setState(() {
+                  markers.add(marker);
                   mapController = controller;
                 });
               },
