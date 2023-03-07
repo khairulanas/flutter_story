@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_story/main.dart';
+
 import 'package:flutter_story/src/core/common/date_format.dart';
 import 'package:flutter_story/src/core/common/localization.dart';
 import 'package:flutter_story/src/core/common/result_state.dart';
+import 'package:flutter_story/src/core/common/shared_p.dart';
 import 'package:flutter_story/src/core/data/datasource/local_datasource.dart';
 import 'package:flutter_story/src/core/data/datasource/remote_datasource.dart';
 import 'package:flutter_story/src/core/data/repository.dart';

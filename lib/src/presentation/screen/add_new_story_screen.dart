@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_story/src/core/common/flavor_type.dart';
 import 'package:flutter_story/src/core/common/localization.dart';
 import 'package:flutter_story/src/presentation/screen/map_picker_widget.dart';
 
@@ -82,9 +83,19 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
                         : PlacemarkWidget(placemark: _placemark!),
                     ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          initialChildsize = 0.8;
-                        });
+                        if (FlavorConfig.instance.flavor == FlavorType.free) {
+                          showAboutDialog(
+                            context: context,
+                            children: [
+                              const Text(
+                                  'This feature is only available for the paid version.')
+                            ],
+                          );
+                        } else {
+                          setState(() {
+                            initialChildsize = 0.8;
+                          });
+                        }
                       },
                       child: Text(AppLocalizations.of(context)!.location),
                     ),
