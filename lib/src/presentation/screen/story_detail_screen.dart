@@ -161,12 +161,16 @@ class _DetailSectionState extends State<DetailSection>
                     const SizedBox(height: 8),
                     const Divider(),
                     const SizedBox(height: 8),
-                    (widget.latitude == null)
+                    (widget.latitude == null || widget.longitude == null)
                         ? const SizedBox()
                         : FutureBuilder(
                             future: geo.placemarkFromCoordinates(
                                 widget.latitude!, widget.longitude!),
                             builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text(
+                                    "${AppLocalizations.of(context)!.addressNotFound}: ${widget.latitude}, ${widget.longitude}");
+                              }
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
                                 final place = snapshot.data![0];

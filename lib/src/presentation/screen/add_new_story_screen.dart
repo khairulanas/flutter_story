@@ -87,8 +87,8 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
                           showAboutDialog(
                             context: context,
                             children: [
-                              const Text(
-                                  'This feature is only available for the paid version.')
+                              Text(AppLocalizations.of(context)!
+                                  .paidVersionAvaliableFeature)
                             ],
                           );
                         } else {

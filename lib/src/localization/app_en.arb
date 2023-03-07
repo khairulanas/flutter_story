@@ -1,6 +1,7 @@
 {
   "addDescription": "Add description",
   "addNewStoryScreen": "Create new story",
+  "addressNotFound": "Address not found on point",
   "benefitFeatureItem1": "All-Access Course",
   "benefitFeatureItem2": "Exam",
   "benefitFeatureItem3": "Send Project",
@@ -27,7 +28,9 @@
   "paidPackageButton": "Choose Package",
   "paidPackagePrice": "{feeSubscription}",
   "paidPackageTitle": "{month,plural, =1{{month} Month} other{{month} Months}} Subscription",
+  "paidVersionAvaliableFeature": "This feature is only available for the paid version",
   "password": "Password",
+  "pickLocation": "Pick Location",
   "pleaseEnterYourEmail": "Please enter your email.",
   "pleaseEnterYourName": "Please enter your name.",
   "pleaseEnterYourPassword": "Please enter your password.",
