@@ -97,7 +97,7 @@ class _AddNewStoryScreenState extends State<AddNewStoryScreen> {
                           });
                         }
                       },
-                      child: Text(AppLocalizations.of(context)!.location),
+                      child: Text(AppLocalizations.of(context)!.pickLocation),
                     ),
                     const Divider(),
                     Container(
